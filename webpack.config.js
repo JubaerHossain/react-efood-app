@@ -34,8 +34,8 @@ module.exports = {
     externals: {
         // global app config object
         config: JSON.stringify({
-            apiUrl: 'http://localhost/wedevs/api/v2',
-            base_Url: 'http://localhost/wedevs',
+            apiUrl: 'http://192.168.31.38/refood/api',
+            base_Url: 'http://192.168.31.38/refood',
         })
     }
 }

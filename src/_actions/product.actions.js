@@ -13,15 +13,27 @@ export const productActions = {
     productdelete
 };
 
-function getproductAll(page=0) {
+function getproductAll(data) {
     return dispatch => {
-        dispatch(request());
-
-        productService.getproductAll(page)
-            .then(
-                products => dispatch(success(products)),
-                error => dispatch(failure(error.toString()))
-            );
+         console.log(`${config.apiUrl}/foods?`,data);
+        try {
+            const  response  =  axios.get(`${config.apiUrl}/foods?${data}`).then((response) => {
+                console.log(response);
+                dispatch(success(response.data.data));
+                dispatch(alertActions.success('Operation successful'));
+                // history.push('/');
+               }, (error) => {
+                dispatch(failure(error.response && error.response.data && error.response.data.data ? error.response.data.data : ''));
+                dispatch(alertActions.error( error.response && error.response.data.message
+                ? error.response.data.message
+                : error.message)); 
+            });
+        } catch (error) {
+            dispatch(failure(error.response && error.response.data && error.response.data.data ? error.response.data.data : ''));
+            dispatch(alertActions.error( error.response && error.response.data.message
+                ? error.response.data.message
+                : error.message));            
+        }
     };
     function request() { return { type: productConstants.PRODUCT_LIST_REQUEST } }
     function success(products) { return { type: productConstants.PRODUCT_LIST_SUCCESS, products } }

@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { Router, Route, Switch, Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { HeaderPage } from '../partials/header';
+import { Header } from '../common/Header';
 import { history } from '../_helpers';
 import { alertActions } from '../_actions';
 import { PrivateRoute } from '../_components';
@@ -23,18 +23,17 @@ function App() {
     }, []);
 
     return (
-            <div className="container-fluid">
-                <div className="row">
-                    {alert.message &&
+            <Fragment>
+                    {/* {alert.message &&
                     <div className="col-lg-8 offset-lg-2 text-center">
                         <div className={`alert ${alert.type}`}>{alert.message}</div>
                     </div>
-                    }
+                    } */}
                     
-                    <HeaderPage></HeaderPage>
+                    <Header></Header>
                     <Router history={history}>
                         <Switch>   
-                            <PrivateRoute exact path="/" component={HomePage} />
+                            <Route exact path="/" component={HomePage} />
                             <Route path="/login" component={LoginPage} />
                             <PrivateRoute  path="/product-add" component={ProductAdd}  />
                             <PrivateRoute  path="/product-view" component={ProductView}  />
@@ -42,9 +41,7 @@ function App() {
                             <Redirect from="*" to="/" />
                         </Switch>
                     </Router>
-
-                </div>
-            </div>
+            </Fragment>
     );
 }
 

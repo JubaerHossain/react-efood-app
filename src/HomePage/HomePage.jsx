@@ -1,24 +1,28 @@
-import React, { useEffect } from 'react';
+import React, { Fragment, useEffect } from 'react';
 
-
+import Catnav from '../common/Catnav'
+import Trending from '../common/Trending'
+import Popular from '../common/Popular'
+import Mostsales from '../common/Mostsales'
 import { Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import ProductList from '../product/list'
-function HomePage() {
- 
+import { Footer } from '../common/footer';
+function HomePage () { 
 
     return (
-        <>       
-        <div className="col-lg-8 offset-lg-2  p-5">
-            <div className="d-flex">
-                <h2>Product List</h2>
-                <Link className="float-right ml-auto" to="/product-add"><Button > Add Product</Button></Link>                
+        <Fragment>          
+
+            <div className="osahan-home-page">
+                       <Catnav/>  
+                <div className="container">                             
+                       <Trending/>
+                       <Popular/>
+                </div>
             </div>
-         </div>
-        <div className="col-lg-8 offset-lg-2">
-          <ProductList></ProductList> 
-        </div>
-        </>
+            <Footer/>
+            
+        </Fragment>
     );
 }
 
