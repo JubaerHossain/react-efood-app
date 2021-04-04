@@ -12,7 +12,7 @@ export const restaurantActions = {
 function getrestaurantAll(data) {
     return dispatch => {
         dispatch(request());
-
+       console.log(`${config.apiUrl}/restaurants?${data}`);
         console.log(`${config.apiUrl}/restaurants?${data}`);
         try {
             const  response  =  axios.get(`${config.apiUrl}/restaurants?${data}`).then((response) => {

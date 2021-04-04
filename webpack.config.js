@@ -34,8 +34,8 @@ module.exports = {
     externals: {
         // global app config object
         config: JSON.stringify({
-            apiUrl: 'http://192.168.31.38/refood/api',
-            base_Url: 'http://192.168.31.38/refood',
+            apiUrl: 'http://192.168.31.211/cook_web_api/api',
+            base_Url: 'http://192.168.31.211/cook_web_api',
         })
     }
 }

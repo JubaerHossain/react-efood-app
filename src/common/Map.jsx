@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import {
   LoadScript,
   GoogleMap,
-  StandaloneSearchBox,
+  Autocomplete,
   Marker,
 } from '@react-google-maps/api';
 import { 
@@ -13,6 +13,7 @@ import {
 import { settingActions } from '../_actions';
 import { useDispatch, useSelector } from 'react-redux';
 import LoadingBox from '../_components/LoadingBox';
+import Geocode from "react-geocode";
 
 const libs = ['drawing', 'visualization', 'places'];
 const defaultLocation = { 
@@ -21,12 +22,13 @@ const defaultLocation = {
  };
 export const Map  = (props) => {
   
-//  console.log(props.address);
   const dispatch = useDispatch();
 
   const [googleApiKey, setGoogleApiKey] = useState('');
   const [center, setCenter] = useState(defaultLocation);
   const [location, setLocation] = useState(center);
+  const [address, setAddress] = useState('');
+  const [city, setCity] = useState(null);
 
   const mapRef = useRef(null);
   const placeRef = useRef(null);
@@ -34,7 +36,10 @@ export const Map  = (props) => {
   const { loading, error, settings} =useSelector(state => state.settings);
     useEffect(() => {
          setGoogleApiKey(settings && settings.google_maps_key);
+         Geocode.setApiKey( settings && settings.google_maps_key );
+         Geocode.enableDebug();
          getUserCurrentLocation();
+         
     }, []);
   const onLoad = (map) => {
     mapRef.current = map;
@@ -51,24 +56,53 @@ export const Map  = (props) => {
       lng: mapRef.current.center.lng(),
     });
   };
-  const onPlacesChanged = () => {
-    const place = placeRef.current.getPlaces()[0].geometry.location;
+  const onPlaceChanged = () => {
+    const place = placeRef.current.getPlace().geometry.location;
     setCenter({ lat: place.lat(), lng: place.lng() });
     setLocation({ lat: place.lat(), lng: place.lng() });
   };
+ const onMarkerDragEnd = (event ) => {
+    let newLat = event.latLng.lat(),
+		    newLng = event.latLng.lng();
+        setCenter({ lat: newLat, lng: newLng });
+        setLocation({ lat: newLat, lng: newLng });
+        getAddrinfo(newLat,newLng);
+  }
+
+  const getAddrinfo = ( lat,lang ) => {
+    Geocode.fromLatLng(lat, lang).then(
+      (response) => {
+        // setAddress('');
+        setAddress(response.results[0].formatted_address)
+          for (let i = 0; i < response.results[0].address_components.length; i++) {
+            for (let j = 0; j < response.results[0].address_components[i].types.length; j++) {
+              switch (response.results[0].address_components[i].types[j]) {
+                case "locality":
+                  // setCity('')
+                  setCity(response.results[0].address_components[i].long_name)
+                  break;
+              }
+            }
+          }
+      },
+      (error) => {
+        alert(error);
+      }
+    )
+  }
   const onConfirm = () => {
-    const places = placeRef.current.getPlaces();
-    if (places && places.length === 1) {
+    //  getAddrinfo(center.lat,center.lng);
+    if (address && address != '') {
       // dispatch select action
       // dispatch({
       //   type: USER_ADDRESS_MAP_CONFIRM,
       //   payload: {
       //     lat: location.lat,
       //     lng: location.lng,
-      //     address: places[0].formatted_address,
-      //     name: places[0].name,
-      //     vicinity: places[0].vicinity,
-      //     googleAddressId: places[0].id,
+      //     address: place[0].formatted_address,
+      //     name: place[0].name,
+      //     vicinity: place[0].vicinity,
+      //     googleAddressId: place[0].id,
       //   },
       // });
       alert('location selected successfully.');
@@ -90,26 +124,31 @@ export const Map  = (props) => {
           lat: position.coords.latitude,
           lng: position.coords.longitude,
         });
+        getAddrinfo(position.coords.latitude,position.coords.longitude);
       });
     }
   };
+
     return googleApiKey ? (
       <>
         <LoadScript 
+              id="script-loader"
               libraries={libs}
               googleMapsApiKey={googleApiKey}
-              preventGoogleFontsLoading
-              region='EN'
+              region='BD'
               >
-        <StandaloneSearchBox
+        <Autocomplete
             onLoad={onLoadPlaces}
-            onPlacesChanged={onPlacesChanged}
-            region='EN'
+            onPlaceChanged={onPlaceChanged}
+            region='BD'
           >
             <div className="map-input-box mb-2">
+            {/* <div className="mb-2 input-group" style ={{ flexWrap: "nowrap" }}> */}
+              
               <input 
                  type="text"
-                 placeholder="Enter your address" 
+                 placeholder="Enter your address"
+                 defaultValue={address}
                  style={{
                   display: "block",
                   width: "100%",
@@ -126,22 +165,40 @@ export const Map  = (props) => {
                   position: "relative",
                   }}
                />
+               {/* <div className="input-group-prepend">
+                <span className="input-group-text">@</span>
+              </div>
+              </div> */}
+              <span  className="locate-me">
+                  <i className="feather-map-pin rounded-pill p-2 icofont-size" onClick={getUserCurrentLocation} />
+              </span>
+               
             </div>
-          </StandaloneSearchBox>
+          </Autocomplete>
         <GoogleMap
           id="smaple-map"
-          region='EN'
           mapContainerStyle={{ height: '310px', width: '100%' }}
           center={center}
-          zoom={17}
+          zoom={15}
           onLoad={onLoad}
           onIdle={onIdle}
+          region='BD'
         >
           
-          <Marker position={location} onLoad={onMarkerLoad}></Marker>
+          <Marker 
+                  position={location} 
+                  onLoad={onMarkerLoad}
+                  onDragEnd={ onMarkerDragEnd }
+                  clickable={true}
+                  draggable={true}
+                  icon="../../public/assets/g_pin.png"
+                  >
+
+          </Marker>
         </GoogleMap>
+        
         <p></p>
-        <Button variant="primary w-100">Find Restaurant</Button>
+        <Button variant="primary w-100" onClick={onConfirm}>Find Restaurant</Button>
       </LoadScript>
       </>
     ): (

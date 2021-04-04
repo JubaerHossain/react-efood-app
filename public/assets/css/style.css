@@ -963,9 +963,9 @@ p {
 .pac-container.pac-logo{
     width: 466px !important;
     position: absolute !important;
-    left: 447px !important;
+    /* left: 447px !important; */
     top: 162px !important;
-    display: block !important;
+    /* display: block !important; */
     z-index: 99999999999999999 !important;
     overflow-x: hidden;
     overflow-y: auto;
@@ -974,6 +974,26 @@ p {
 .modal-open .modal {
     overflow-x: hidden !important;
     overflow-y: hidden !important;
+}
+.locate-me{
+    cursor: pointer;
+    font-size: 20px;
+    position: absolute;
+    top: 40px;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    right: 1px;
+    padding: 16px;
+    z-index: 1;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    color: #d92662;
 }
 
 @-webkit-keyframes sk-scaleout {
@@ -1429,6 +1449,11 @@ footer .text-muted {
         width: 100% !important;
         flex: unset !important;
         max-width: 100%;
+    }
+
+    .pac-container.pac-logo{
+        width: 90% !important;
+        top: 140px !important;
     }
 
 }
