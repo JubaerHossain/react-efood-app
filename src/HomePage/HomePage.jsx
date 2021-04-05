@@ -8,7 +8,12 @@ import { Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import ProductList from '../product/list'
 import { Footer } from '../common/footer';
-function HomePage () { 
+import { useDispatch } from 'react-redux';
+function HomePage (props) { 
+    const dispatch = useDispatch();
+        useEffect(() => {
+            // props.history.push(location.pathname);
+        },[] );
 
     return (
         <Fragment>          

@@ -6,6 +6,10 @@ export function users(state = {}, action) {
             return {
                 loading: true
             };
+        case userConstants.USER_ADDRESS_MAP_CONFIRM:
+            return {
+                address: action.payload
+            };
         case userConstants.GETALL_SUCCESS:
             return {
                 items: action.users

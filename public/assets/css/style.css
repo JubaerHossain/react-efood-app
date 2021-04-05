@@ -983,7 +983,7 @@ p {
     -webkit-transform: translateY(-50%);
     transform: translateY(-50%);
     right: 1px;
-    padding: 16px;
+    /* padding: 16px; */
     z-index: 1;
     display: -webkit-box;
     display: -webkit-flex;
@@ -994,6 +994,8 @@ p {
     -ms-flex-align: center;
     align-items: center;
     color: #d92662;
+    background: #fff;
+    margin-right: 17px;
 }
 
 @-webkit-keyframes sk-scaleout {

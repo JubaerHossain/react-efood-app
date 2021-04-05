@@ -51,7 +51,7 @@ export  function MapModal () {
                         <Modal.Title>Is this your exact location?</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Map address={address}/>
+                    <Map closeModal={() => handleClose()}/>
                 </Modal.Body>
                 <Modal.Footer>
                       

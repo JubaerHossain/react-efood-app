@@ -14,6 +14,9 @@ import { settingActions } from '../_actions';
 import { useDispatch, useSelector } from 'react-redux';
 import LoadingBox from '../_components/LoadingBox';
 import Geocode from "react-geocode";
+import { useHistory } from "react-router-dom";
+// import { history } from '../_helpers';
+import { userConstants } from '../_constants';
 
 const libs = ['drawing', 'visualization', 'places'];
 const defaultLocation = { 
@@ -90,22 +93,23 @@ export const Map  = (props) => {
       }
     )
   }
+  const history = useHistory();
   const onConfirm = () => {
     //  getAddrinfo(center.lat,center.lng);
     if (address && address != '') {
-      // dispatch select action
-      // dispatch({
-      //   type: USER_ADDRESS_MAP_CONFIRM,
-      //   payload: {
-      //     lat: location.lat,
-      //     lng: location.lng,
-      //     address: place[0].formatted_address,
-      //     name: place[0].name,
-      //     vicinity: place[0].vicinity,
-      //     googleAddressId: place[0].id,
-      //   },
-      // });
-      alert('location selected successfully.');
+      const data = {
+        lat: center.lat,
+        lng: center.lng,
+        city: city,
+        address: address,
+      }
+      dispatch({
+        type: userConstants.USER_ADDRESS_MAP_CONFIRM,
+        payload:data,
+      });
+      localStorage.setItem('address', JSON.stringify(data));
+      props.closeModal()
+      history.push(`/restaurants`);
     } else {
       alert('Please enter your address');
     }
