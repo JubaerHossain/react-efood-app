@@ -8,6 +8,9 @@ import { products } from './products.reducer';
 import { categories } from './categories.reducer';
 import { product } from './product.reducer';
 import { restaurants } from './restaurants.reducer';
+import { trending_restaurants } from './trending_restaurants.reducer';
+import { popular_restaurants } from './popular_restaurants.reducer';
+import { new_restaurants } from './new_restaurants.reducer';
 import { settings } from './settings.reducer';
 
 const rootReducer = combineReducers({
@@ -18,6 +21,9 @@ const rootReducer = combineReducers({
     categories,
     product,
     restaurants,
+    trending_restaurants,
+    popular_restaurants,
+    new_restaurants,
     settings,
     alert
 });

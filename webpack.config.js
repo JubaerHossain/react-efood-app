@@ -1,6 +1,6 @@
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
-
+const Dotenv = require('dotenv-webpack');
 module.exports = {
     mode: 'development',
     module: {
@@ -10,7 +10,7 @@ module.exports = {
                 loader: 'babel-loader'
             },
             {
-                test: /\.less$/,
+                test: /\.css$/,
                 use: [
                     { loader: 'style-loader' },
                     { loader: 'css-loader' },
@@ -25,9 +25,12 @@ module.exports = {
             '@': path.resolve(__dirname, 'src/'),
         }
     },
-    plugins: [new HtmlWebpackPlugin({
-        template: './public/index.html'
-    })],
+    plugins: [
+        new HtmlWebpackPlugin({
+            template: './public/index.html'
+        }),
+        new Dotenv()
+        ],
     devServer: {
         historyApiFallback: true
     },

@@ -17,6 +17,7 @@ function getcategoryAll() {
     return dispatch => {
         dispatch(request());
         try {
+            
             const  response  =  axios.get(`${config.apiUrl}/categories`).then((response) => {
                 console.log(response);
                 dispatch(success(response.data.data));

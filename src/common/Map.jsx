@@ -15,20 +15,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import LoadingBox from '../_components/LoadingBox';
 import Geocode from "react-geocode";
 import { useHistory } from "react-router-dom";
+import { toast } from 'react-toastify';
 // import { history } from '../_helpers';
 import { userConstants } from '../_constants';
 
 const libs = ['drawing', 'visualization', 'places'];
-const defaultLocation = { 
-    lat: 23.8103,
-    lng: 90.4125
- };
-export const Map  = (props) => {
-  
-  const dispatch = useDispatch();
 
+export const Map  = (props) => {
+  const local = props.center;
+  const dispatch = useDispatch();
   const [googleApiKey, setGoogleApiKey] = useState('');
-  const [center, setCenter] = useState(defaultLocation);
+  const [center, setCenter] = useState(local);
   const [location, setLocation] = useState(center);
   const [address, setAddress] = useState('');
   const [city, setCity] = useState(null);
@@ -41,7 +38,8 @@ export const Map  = (props) => {
          setGoogleApiKey(settings && settings.google_maps_key);
          Geocode.setApiKey( settings && settings.google_maps_key );
          Geocode.enableDebug();
-         getUserCurrentLocation();
+         props.localAddress ?  getUserTrack() : getUserCurrentLocation();
+          // getUserCurrentLocation();
          
     }, []);
   const onLoad = (map) => {
@@ -60,9 +58,16 @@ export const Map  = (props) => {
     });
   };
   const onPlaceChanged = () => {
-    const place = placeRef.current.getPlace().geometry.location;
-    setCenter({ lat: place.lat(), lng: place.lng() });
-    setLocation({ lat: place.lat(), lng: place.lng() });
+    try {
+      const place = placeRef.current.getPlace().geometry.location;
+      setCenter({ lat: place.lat(), lng: place.lng() });
+      setLocation({ lat: place.lat(), lng: place.lng() });
+    } catch (error) {
+      toast.error('Location not found! try again', {
+        position: toast.POSITION.BOTTOM_RIGHT
+      });
+    }
+    
   };
  const onMarkerDragEnd = (event ) => {
     let newLat = event.latLng.lat(),
@@ -89,7 +94,9 @@ export const Map  = (props) => {
           }
       },
       (error) => {
-        alert(error);
+        toast.error('Location not found! try again', {
+          position: toast.POSITION.BOTTOM_RIGHT
+        });
       }
     )
   }
@@ -111,13 +118,23 @@ export const Map  = (props) => {
       props.closeModal()
       history.push(`/restaurants`);
     } else {
-      alert('Please enter your address');
+      toast.error('Please enter your address', {
+        position: toast.POSITION.BOTTOM_RIGHT
+      });
     }
   };
 
+  const getUserTrack = () => {
+    setCenter(local);
+    setLocation(local);
+    getAddrinfo(center.lat,center.lng)
+  }
+
   const getUserCurrentLocation = () => {
     if (!navigator.geolocation) {
-      alert('Geolocation os not supported by this browser');
+      toast.error('Geolocation os not supported by this browser', {
+        position: toast.POSITION.BOTTOM_RIGHT
+      });
     } else {
       navigator.geolocation.getCurrentPosition((position) => {
         setCenter({
@@ -135,12 +152,6 @@ export const Map  = (props) => {
 
     return googleApiKey ? (
       <>
-        <LoadScript 
-              id="script-loader"
-              libraries={libs}
-              googleMapsApiKey={googleApiKey}
-              region='BD'
-              >
         <Autocomplete
             onLoad={onLoadPlaces}
             onPlaceChanged={onPlaceChanged}
@@ -149,7 +160,8 @@ export const Map  = (props) => {
             <div className="map-input-box mb-2">
             {/* <div className="mb-2 input-group" style ={{ flexWrap: "nowrap" }}> */}
               
-              <input 
+              <input
+               className="shadow-none form-control w-100" 
                  type="text"
                  placeholder="Enter your address"
                  defaultValue={address}
@@ -164,7 +176,6 @@ export const Map  = (props) => {
                   backgroundClip: "padding-box",
                   border: "1px solid #ced4da",
                   borderColor: "1px solid #ced4da",
-                  borderRadius: ".25rem",
                   transition: "border-color .15s ease-in-out,box-shadow .15s ease-in-out",
                   position: "relative",
                   }}
@@ -203,7 +214,6 @@ export const Map  = (props) => {
         
         <p></p>
         <Button variant="primary w-100" onClick={onConfirm}>Find Restaurant</Button>
-      </LoadScript>
       </>
     ): (
       <LoadingBox></LoadingBox>

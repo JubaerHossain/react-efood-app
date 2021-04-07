@@ -5,25 +5,30 @@ import { authHeader } from '../_helpers/auth-header';
 import { MapModal } from './MapModal';
 import { settingActions } from '../_actions';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 export  function Header () {
     const dispatch = useDispatch();
       useEffect(() => {        
-        dispatch(settingActions.getsettingAll());
+         dispatch(settingActions.getsettingAll());
       }, []);
-
+      const history = useHistory();
   return (
     <>
          <header className="section-header cs-bloc">
                 <section className="header-main shadow-sm bg-white">
                 <div className="container">
                     <div className="row align-items-center">
-                    <div className="col-1">
+                    <div className="col-sm-1 col-md-1 col-lg-1">
                         <Link to="/" className="brand-wrap mb-0">
                         <img alt="#" className="img-fluid" src="../../../public/assets/img/logo_web.png" />
                         </Link>
                     </div>
-                    <MapModal/>
-                    <div className="col-5 auth_sign">
+                    {history.location.pathname === '/' ?
+                       <MapModal/>
+                       :
+                       <div className="col-sm-6 col-md-6 col-lg-6 d-flex align-items-center mob_search"></div>
+                    }
+                    <div className="col-sm-5 col-md-5 col-lg-5 auth_sign">
                         <div className="d-flex align-items-center justify-content-end">                        
                         <a href="login.html" className="widget-header mr-4 text-dark ">
                             <div className="icon d-flex align-items-center"><i className="feather-user h6 mr-2 mb-0" /> <span>Sign in</span></div>
@@ -53,6 +58,7 @@ export  function Header () {
                 </div>
                 </section>
             </header>
+            
 
             <div className="modal fade" id="exampleModal" tabIndex={-1} role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className="modal-dialog modal-dialog-centered">

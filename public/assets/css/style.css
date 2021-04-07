@@ -964,7 +964,7 @@ p {
     width: 466px !important;
     position: absolute !important;
     /* left: 447px !important; */
-    top: 162px !important;
+    /* top: 162px !important; */
     /* display: block !important; */
     z-index: 99999999999999999 !important;
     overflow-x: hidden;
@@ -979,7 +979,7 @@ p {
     cursor: pointer;
     font-size: 20px;
     position: absolute;
-    top: 40px;
+    top: 35px;
     -webkit-transform: translateY(-50%);
     transform: translateY(-50%);
     right: 1px;
@@ -996,6 +996,46 @@ p {
     color: #d92662;
     background: #fff;
     margin-right: 17px;
+}
+.locate-me-button{
+    cursor: pointer;
+    font-size: 20px;
+    top: 24px;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    right: 1px;
+    z-index: 1;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    color: #d92662;
+    background: #fff;
+    position: absolute;
+}
+.map-input{
+    display: block;
+    width: 100%;
+    padding: 1.475rem 0.75rem;
+    font-size: 13px;
+    line-height: 2;
+    color: rgb(73, 80, 87);
+    background-color: rgb(255, 255, 255);
+    background-clip: padding-box;
+    border: 1px solid rgb(206, 212, 218);
+    transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+    position: absolute;
+}
+.locate-me-button button{
+    padding: 15px 35px;
+}
+
+.pb-50{
+    padding-bottom: 50px !important;
 }
 
 @-webkit-keyframes sk-scaleout {
@@ -1291,7 +1331,7 @@ footer .text-muted {
         /* display: none; */
     }
     .header-main {
-        height: 67px;
+        height: 80px;
     }
     .header-main .col-1 {
         width: auto !important;
@@ -1301,7 +1341,7 @@ footer .text-muted {
         padding: 8px;
     }
     .header-main .row.align-items-center {
-        height: 67px;
+        height: 80px;
     }
     .header-main .col-8 {
         flex: unset;
@@ -1379,7 +1419,7 @@ footer .text-muted {
         margin-right: 0 !important;
     }
     .header-main {
-        height: 115px;
+        height: 135px;
     }
     .mob_log{
         /* margin-right: -40px; */

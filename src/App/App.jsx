@@ -12,7 +12,8 @@ import {ProductEdit} from '../product/ProductEdit';
 import {ProductView} from '../product/ProductView';
 import { RestaurantPage } from '../Pages/RestaurantPage';
 import { Notfound } from '../Pages/Notfound';
-
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 function App() {
     const alert = useSelector(state => state.alert);
     const dispatch = useDispatch();
@@ -26,12 +27,7 @@ function App() {
 
     return (
             <Router>
-                    {/* {alert.message &&
-                    <div className="col-lg-8 offset-lg-2 text-center">
-                        <div className={`alert ${alert.type}`}>{alert.message}</div>
-                    </div>
-                    } */}
-                    
+                    <ToastContainer autoClose={5000}/>
                     <Header></Header>
                         <Switch>   
                             <Route exact path="/" component={HomePage} />

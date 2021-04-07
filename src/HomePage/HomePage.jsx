@@ -8,7 +8,8 @@ import { Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import ProductList from '../product/list'
 import { Footer } from '../common/footer';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { RestaurantPage } from '../Pages/RestaurantPage';
 function HomePage (props) { 
     const dispatch = useDispatch();
         useEffect(() => {
@@ -16,16 +17,9 @@ function HomePage (props) {
         },[] );
 
     return (
-        <Fragment>          
-
-            <div className="osahan-home-page">
-                       <Catnav/>  
-                <div className="container">                             
-                       <Trending/>
-                       <Popular/>
-                </div>
-            </div>
-            <Footer/>
+        <Fragment> 
+            
+            <RestaurantPage></RestaurantPage>  
             
         </Fragment>
     );
